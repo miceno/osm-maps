@@ -6,16 +6,26 @@
     <title>1974 Poblenou</title>
 
     <!-- Leaflet -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.css">
     <link rel="stylesheet"
           href="https://cdn.rawgit.com/ardhi/Leaflet.MousePosition/master/src/L.Control.MousePosition.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.js" type="text/javascript"></script>
     <script src="https://cdn.rawgit.com/ardhi/Leaflet.MousePosition/master/src/L.Control.MousePosition.js"
             type="text/javascript"></script>
+
+
+    <script src="https://res.cloudinary.com/ahpn/raw/upload/v1561788953/www.arxiuhistoricpoblenou.cat/js/l.control.opacity/L.Control.Opacity.js"></script>
+
+    <link rel="stylesheet" href="https://res.cloudinary.com/ahpn/raw/upload/v1561789057/www.arxiuhistoricpoblenou.cat/js/l.control.opacity/L.Control.Opacity.css">
+
     <style>
         body {
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
         }
 
         body, table, tr, td, th, div, h1, h2, input {
@@ -28,92 +38,50 @@
             top: 0;
             bottom: 0;
             width: 100%;
-        }
-
-        /* full size */
-        .ctl {
-            padding: 2px 10px 2px 10px;
-            background: white;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-            text-align: right;
-        }
-
-        .title {
-            font-size: 18pt;
-            font-weight: bold;
-        }
-
-        .src {
-            font-size: 10pt;
-        }
-
-    </style>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-        }
-
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
             z-index: 1;
         }
 
-        #slider {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 5;
-        }
     </style>
 </head>
 <body>
 
 <div id="map"></div>
-<input id="slider" type="range" min="0" max="1" step="0.1" value="1" oninput="layer1974.setOpacity(this.value)">
 
 <script>
     /* **** Leaflet **** */
+    let mapMinZoom = 1;
+    let mapMaxZoom = 19;
 
     // Base layers
     //  .. OpenStreetMap
     var osm = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        minZoom: 1,
-        maxZoom: 19
+        minZoom: mapMinZoom,
+        maxZoom: mapMaxZoom
     });
 
     //  .. CartoDB Positron
     var cartodb = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-        minZoom: 1,
-        maxZoom: 19
+        minZoom: mapMinZoom,
+        maxZoom: mapMaxZoom
     });
 
     //  .. OSM Toner
     // var toner = L.tileLayer('https://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
     var toner = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png', {
         attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
-        minZoom: 1,
-        maxZoom: 19
+        minZoom: mapMinZoom,
+        maxZoom: mapMaxZoom
     });
 
     //  .. White background
     var white = L.tileLayer("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAAA1BMVEX///+nxBvIAAAAH0lEQVQYGe3BAQ0AAADCIPunfg43YAAAAAAAAAAA5wIhAAAB9aK9BAAAAABJRU5ErkJggg==", {
-        minZoom: 1,
-        maxZoom: 19
+        minZoom: mapMinZoom,
+        maxZoom: mapMaxZoom
     });
 
-    var mapMinZoom = 1;
-    var mapMaxZoom = 19;
+
     var options = {
         minZoom: mapMinZoom,
         maxZoom: mapMaxZoom,
@@ -134,9 +102,9 @@
     // Map
     var map = L.map('map', {
         center: [41.400866604003554, 2.2063666932683086],
-        zoom: 19,
-        minZoom: 1,
-        maxZoom: 19,
+        zoom: mapMaxZoom,
+        minZoom: mapMinZoom,
+        maxZoom: mapMaxZoom,
         layers: [osm]
     });
 
@@ -150,6 +118,13 @@
 
     // Add base layers
     L.control.layers(basemaps, overlaymaps, {collapsed: false}).addTo(map);
+
+    L.control.opacity(
+        overlaymaps,
+        {
+            label: "Transparencia"
+        }
+    ).addTo(map);
 
     // Fit to overlay bounds (SW and NE points with (lat, lon))
     map.fitBounds([[41.384220462245494, 2.2261745174208953], [41.417512745761606, 2.1865588691157223]]);
