@@ -17,7 +17,8 @@
             type="text/javascript"></script>
 
     <script src="https://res.cloudinary.com/ahpn/raw/upload/v1561788953/www.arxiuhistoricpoblenou.cat/js/l.control.opacity/L.Control.Opacity.js"></script>
-    <link rel="stylesheet" href="https://res.cloudinary.com/ahpn/raw/upload/v1561789057/www.arxiuhistoricpoblenou.cat/js/l.control.opacity/L.Control.Opacity.css">
+    <link rel="stylesheet"
+          href="https://res.cloudinary.com/ahpn/raw/upload/v1561789057/www.arxiuhistoricpoblenou.cat/js/l.control.opacity/L.Control.Opacity.css">
 
     <style>
         body {
@@ -56,17 +57,17 @@
         var layers = {};
 
         var icgc_layers = [
-            { layer: 'ovaa10m', name: '(1945-46) Vol americà sèrie A 1:10.000' },
-            { layer: 'ovab5m', name: '(1956-57) Vol americà sèrie B 1:5.000' },
+            {layer: 'ovaa10m', name: '(1945-46) Vol americà sèrie A 1:10.000'},
+            {layer: 'ovab5m', name: '(1956-57) Vol americà sèrie B 1:5.000'},
             // { layer: 'orto5m1983', name: '1983 Catalunya 1:5.000' },
-            { layer: 'orto5m1986', name: '1986 Catalunya 1:5.000' },
+            {layer: 'orto5m1986', name: '1986 Catalunya 1:5.000'},
             // { layer: 'orto5m1989', name: '1989 Catalunya 1:5.000' },
-            { layer: 'orto25m1990', name: '1990 Catalunya 1:25.000' },
-            { layer: 'orto25m1993', name: '1993 Catalunya 1:25.000' },
-            { layer: 'orto25m1996', name: '1996 Catalunya 1:25.000' },
-            { layer: 'orto10c2011', name: '2011 Catalunya 1:1.000' },
-            { layer: 'ortoi5m2015', name: '2015 Infrarroja Catalunya 1:5.000' },
-            { layer: 'orto25c2015', name: '2015 Catalunya 1:2.500' },
+            {layer: 'orto25m1990', name: '1990 Catalunya 1:25.000'},
+            {layer: 'orto25m1993', name: '1993 Catalunya 1:25.000'},
+            {layer: 'orto25m1996', name: '1996 Catalunya 1:25.000'},
+            {layer: 'orto10c2011', name: '2011 Catalunya 1:1.000'},
+            {layer: 'ortoi5m2015', name: '2015 Infrarroja Catalunya 1:5.000'},
+            {layer: 'orto25c2015', name: '2015 Catalunya 1:2.500'},
         ];
 
         for (var l of icgc_layers) {
@@ -94,6 +95,18 @@
                 '<a href="https://creativecommons.org/licenses/by/4.0/deed.ca" target="_blank">CC BY 4.0</a>',
         };
         layers['actual'] = L.tileLayer.wms('http://geoserveis.icgc.cat/icc_mapesbase/wms/service?',
+            wmsOptions);
+
+        wmsOptions = {
+            'layers': 'Cartografia_AMB_Orto_1974_5M_25831',
+            'transparent': false,
+            'minZoom': 1,
+            'maxZoom': 22,
+            attribution: '&copy; <a href="http://www.amb.cat">AMB Barcelona</a>&nbsp;' +
+                ' amb finalitat d\'investigació i recerca',
+        };
+        // layers['1974 AMB'] = L.tileLayer('http://geoportal.amb.cat/arcgis/rest/services/Cartografia/AMB_Orto_1974_5M_25831/MapServer/tile/{z}/{x}/{y}',
+        layers['1974 AMB'] = L.tileLayer('http://geoportal.amb.cat/arcgis/rest/services/Cartografia/AMB_Orto_1974_5M_25831/MapServer/WMTS/tile/1.0.0/Cartografia_AMB_Orto_1974_5M_25831/default/default028mm/{z}/{x}/{y}.png',
             wmsOptions);
         return layers;
     }
@@ -160,8 +173,10 @@
         "Stamen Toner": toner,
         "Without background": white
     };
-    var overlaymaps = {"1974": layer1974, "1965": layer1965, "1927": layer1927 };
-    overlaymaps = { ...overlaymaps, ...historic_layers };
+    var overlaymaps = {"1974": layer1974, "1965": layer1965, "1927": layer1927};
+    overlaymaps = {...overlaymaps, ...historic_layers};
+
+
     // Add base layers
     L.control.layers(basemaps, overlaymaps, {collapsed: false}).addTo(map);
 
@@ -177,7 +192,6 @@
 
     // Fit to overlay bounds (SW and NE points with (lat, lon))
     map.fitBounds([[41.384220462245494, 2.2261745174208953], [41.417512745761606, 2.1865588691157223]]);
-
 
 
 </script>
